@@ -25,6 +25,12 @@ The system allows restoring the database from a .sql backup file.
 
 #🛠 How to Run the Project?
 
+## 🗂 Database Schema
+
+Below is the database structure:
+
+![database_diagram](database_diagram.png)
+
 ### 1️⃣ Clone the repository
 
 ```
