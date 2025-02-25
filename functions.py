@@ -5,7 +5,7 @@ from config import db_config
 import os
 import subprocess
 
-
+# Function for connection to MySQL - Go to config.py for more informations
 def mysql_connection(config):
     connection = None
     try:
@@ -114,12 +114,15 @@ def pop_order_items():
 
 
 def create_backup():
+    # The backup must be created on the same local disk where Windows is installed
     backup_file = "C:/Backup_SQLproject/backup.sql"
-    # Caminho completo para mysqldump
+    # This is required to ensure the correct execution of the backup command
     mysqldump_path = r"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe"
-    # Comando para criar o backup
+    # This command uses the database configuration settings to generate a backup file
     backup_command = f'"{mysqldump_path}" -h {db_config["host"]} -u {db_config["user"]} -p{db_config["password"]} {db_config["database"]} > "{backup_file}"'
-    # Executa o backup no CMD
+    # Execute the backup command in the Windows command line
+    # Using "shell=True" ensures that the command runs within the system shell (CMD)
+    # "capture_output=True" captures the command's standard output and error messages for debugging
     process = subprocess.run(backup_command, shell=True,
                              capture_output=True, text=True)
     if process.returncode == 0:
@@ -130,11 +133,8 @@ def create_backup():
 
 def restore_backup():
     backup_file = "C:/Backup_SQLproject/backup.sql"
-    # Caminho completo para mysql
     mysql_path = r"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe"
-    # Comando para restaurar o backup
     restore_command = f'"{mysql_path}" -h {db_config["host"]} -u {db_config["user"]} -p{db_config["password"]} {db_config["database"]} < "{backup_file}"'
-    # Executa a restauração no CMD
     process = subprocess.run(restore_command, shell=True,
                              capture_output=True, text=True)
     if process.returncode == 0:
